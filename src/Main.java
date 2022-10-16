@@ -224,7 +224,7 @@ public class Main {
                     System.out.println(OUTPUTMESSAGE);
                 }
             } else {
-                //System.out.println(total+" "+arr.length);
+
 
                 System.out.println("(error) "+CODEISSUE);
             }
@@ -422,9 +422,66 @@ try{
             }
 
     }catch(Exception e) {
-        System.out.println("(error) syntax error"+e);
+        System.out.println("(error) syntax error");
     }
 
+    }
+    static void LRANGE(String arr[]){
+    try{
+        if(arr.length==4) {
+            int found_pos = -1;
+            //FIND IF THE LIST EXISTS TO PREFORM THE POP
+            for (int search = 0; search < listStack.size(); search++) {
+                if (listStack.elementAt(search).name.equals(arr[1])) {
+                    found_pos = search;
+                }
+            }
+            //IF IT WASN'T FOUND WITHIN THE STACK OF LISTS THEN SOUT NIL AND QUIT
+            if (found_pos == -1) {
+                System.out.println("> (nil)");
+                return;
+            } else {
+                int start = Integer.parseInt(arr[2]);
+                int end = Integer.parseInt(arr[3]);
+                if (start < 0) {
+                    //Incase of a negative add it to the size so that if you wanted to start 3 from the end you can say
+                    // -3 which is going to be processed as n+(-3) which gives you that pos
+                    start = listStack.elementAt(found_pos).stacklist.size() + start;
+                }
+                if (end < 0) {
+                    end = listStack.elementAt(found_pos).stacklist.size() + end;
+                }
+
+
+                //IF THE START IS TOO FAR BACK EVEN AFTER THE SHIFT DEFAULT TO 0
+                if (start < 0) {
+                    start = 0;
+                }
+                if (end < 0) {
+                    end = 0;
+                }
+                //IF THE SIZE OF EITHER START OR END IS LARGER THAN THE SIZE OF THE STACK STOP IT AT THE END
+                if (end > listStack.elementAt(found_pos).stacklist.size()) {
+                    end = listStack.elementAt(found_pos).stacklist.size() - 1;
+                }
+                if (start > listStack.elementAt(found_pos).stacklist.size()) {
+                    start = listStack.elementAt(found_pos).stacklist.size() - 1;
+                }
+                //OUTPUT THE CONTROLLED RANGE
+
+                int counter = 0;
+                System.out.println("start: " + start + "| end: " + end);
+                for (start = start; start <= end; start--) {
+                    System.out.println(++counter + ") " + listStack.elementAt(found_pos).stacklist.elementAt(start));
+                }
+
+            }
+        }else{
+            System.out.println("(error) syntax error");
+        }
+    }catch(Exception e) {
+        System.out.println("(error) syntax error");
+    }
     }
     public static void CommandLine(){
         try {
@@ -453,7 +510,10 @@ try{
                     break;
                 case "LPOP":
                     LPOP(arr);
-
+                    break;
+                case "LRANGE":
+                    LRANGE(arr);
+                    break;
                 case "OUT":
                     // OUTPUTS ALL KEY AND VALS (DOESNT WORK WITH LISTS CREATED WITH LPUSH)
                     while (stack.empty() != true) {
