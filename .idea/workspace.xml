@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d41ebdb9-76b8-416f-8a10-a2aab98eb64b" name="Changes" comment="Test">
+    <list default="true" id="d41ebdb9-76b8-416f-8a10-a2aab98eb64b" name="Changes" comment="Added README.md/ Implimented LRANGE function -- need to fix output of lrange as it pulls from the bottom and a couple other bugs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
@@ -42,7 +42,8 @@
       <workItem from="1665787742031" duration="612000" />
       <workItem from="1665788356876" duration="16738000" />
       <workItem from="1665805979684" duration="4873000" />
-      <workItem from="1665888062533" duration="22021000" />
+      <workItem from="1665888062533" duration="22072000" />
+      <workItem from="1665973163712" duration="3704000" />
     </task>
     <task id="LOCAL-00001" summary="Starting...">
       <created>1665787755713</created>
@@ -79,7 +80,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665907252941</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added README.md/ Implimented LRANGE function -- need to fix output of lrange as it pulls from the bottom and a couple other bugs">
+      <created>1665910750344</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1665910750344</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -99,6 +107,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Starting..." />
     <MESSAGE value="Test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test" />
+    <MESSAGE value="Added README.md/ Implimented LRANGE function -- need to fix output of lrange as it pulls from the bottom and a couple other bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added README.md/ Implimented LRANGE function -- need to fix output of lrange as it pulls from the bottom and a couple other bugs" />
   </component>
 </project>

@@ -17,6 +17,7 @@ class NODE{
 
 
     }
+
 }
 
 class LIST{
@@ -441,8 +442,8 @@ try{
                 System.out.println("> (nil)");
                 return;
             } else {
-                int start = Integer.parseInt(arr[2]);
-                int end = Integer.parseInt(arr[3]);
+                int start = (Integer.parseInt(arr[2]));
+                int end = (Integer.parseInt(arr[3]));
                 if (start < 0) {
                     //Incase of a negative add it to the size so that if you wanted to start 3 from the end you can say
                     // -3 which is going to be processed as n+(-3) which gives you that pos
@@ -458,21 +459,43 @@ try{
                     start = 0;
                 }
                 if (end < 0) {
-                    end = 0;
+                    end = -1;
                 }
                 //IF THE SIZE OF EITHER START OR END IS LARGER THAN THE SIZE OF THE STACK STOP IT AT THE END
                 if (end > listStack.elementAt(found_pos).stacklist.size()) {
-                    end = listStack.elementAt(found_pos).stacklist.size() - 1;
+                    end = listStack.elementAt(found_pos).stacklist.size();
                 }
                 if (start > listStack.elementAt(found_pos).stacklist.size()) {
-                    start = listStack.elementAt(found_pos).stacklist.size() - 1;
+                    start = listStack.elementAt(found_pos).stacklist.size();
                 }
-                //OUTPUT THE CONTROLLED RANGE
+                //OUTPUT THE CONTROLLED RANGEl
 
                 int counter = 0;
-                System.out.println("start: " + start + "| end: " + end);
-                for (start = start; start <= end; start--) {
-                    System.out.println(++counter + ") " + listStack.elementAt(found_pos).stacklist.elementAt(start));
+                //IF THE START IS LARGER THAN THE END AFTER PROCESSING
+                if(start>end){
+                    System.out.println("(empty array)");
+                    return;
+                }
+                //IF END DOESNT EQUAL THE SIZE OF THE STACKLIST
+                if(end!=listStack.elementAt(found_pos).stacklist.size()) {
+                    end++;
+                }
+                //IF END == START AND == STACKLIST SIZE
+                else if (start==end) {
+                    System.out.println("(empty array)");
+                    return;
+                }
+                //System.out.println("start: " + start + "| end: " + end);
+
+
+                if(start ==0&&end==0){
+                    System.out.println("(empty array)");
+                    return;
+                }
+
+                for (start = start; start < end; start++) {
+
+                    System.out.println(++counter + ") " + listStack.elementAt(found_pos).stacklist.elementAt(listStack.elementAt(found_pos).stacklist.size()-start-1));
                 }
 
             }
@@ -480,7 +503,7 @@ try{
             System.out.println("(error) syntax error");
         }
     }catch(Exception e) {
-        System.out.println("(error) syntax error");
+        System.out.println("(error) syntax error"+e);
     }
     }
     public static void CommandLine(){
