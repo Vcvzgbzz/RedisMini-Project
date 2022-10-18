@@ -1,6 +1,7 @@
 // Jadeyn Fincher -- 2022 QUIQ INTERNSHIP PROJECT
 // +1 406-261-5152/jadeyn.fincher@gmail.com
 //_________________________________________
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -25,27 +26,36 @@ class LIST{
     String name= "";
     Stack<String> stacklist = new Stack<String>();
 
-    public void add(String key){
-        stacklist.push(key);
-    }
+
     public LIST() {
-        Stack<String> stacklist = new Stack<String>();
 
     }
 }
 public class Main {
-    static Stack<NODE> stack = new Stack<NODE>();
-    static Stack<LIST> listStack = new Stack<LIST>();
+    //static Stack<NODE> stack = new Stack<NODE>();
+    //static Stack<LIST> listStack = new Stack<LIST>();
+    static HashMap<String, NODE> HashMapKey = new HashMap<String, NODE>();
+
+    static HashMap<String,LIST> HashMapList = new HashMap<String, LIST>();
 
 
 
-    static void operateSet(String arr[], NODE node,boolean exists,int pos){
+    static void operateSet(String arr[], NODE node, boolean exists) {
+
+    }
+
+
+    public static void SET(String[] arr) {
         //for each option time, setif's
 
-        boolean time_been_set =false;
-        boolean setif_set =false;
-        boolean time_saved=false;
+        boolean time_been_set = false;
+        boolean setif_set = false;
+        boolean time_saved = false;
+        NODE node = new NODE();
 
+        if(HashMapKey.containsKey(arr[1])==true) {
+            node = HashMapKey.get(arr[1]);
+        }
 
 
         NODE copy = new NODE();
@@ -53,10 +63,10 @@ public class Main {
         copy.value = node.value;
 
         //Default code issue
-        String CODEISSUE="syntax error";
+        String CODEISSUE = "syntax error";
 
         String OUTPUTMESSAGE = "> OK";
-        int total=0; // Will be used to make sure all fields in command are being used by totalling the fields
+        int total = 0; // Will be used to make sure all fields in command are being used by totalling the fields
 
         //COUNTS FOR THE KEY AND THE COMMAND SPOTS
         total++;
@@ -64,35 +74,35 @@ public class Main {
 
 
         // FOR LOOP TO GRAB OPTIONAL COMMANDS THAT ARE INPUTTED
-        for(int arrpos = 2; arrpos<arr.length;arrpos++) {
+        for (int arrpos = 2; arrpos < arr.length; arrpos++) {
 
             if (arr[arrpos].toUpperCase().equals("GET")) {
-                int get_search=-1;
-                for(int search=0;search<stack.size();search++){
-                    if (stack.elementAt(search).key.equals(arr[1])){
-                        get_search=search;
+                NODE search_node = HashMapKey.get(arr[1]);
+
+
+                if (search_node != null) {
+                    System.out.println(search_node.value);
+                } else {
+                    if(HashMapList.containsKey(arr[1])){
+                        System.out.println("(error) WRONGTYPE Operation against a key holding the wrong kind of value");
+                        return;
+                    }else{
+                        System.out.println("> (nil)");
+                        return;
                     }
-                }
 
-
-                if(get_search>=0){
-                    System.out.println(stack.elementAt(get_search).value);
-
-                }else{
-                    System.out.println("> (nil)");
-                    return;
                 }
                 total++;
             }
 
 
             if (arr[arrpos].toUpperCase().equals("KEEPTTL")) {
-                if(time_been_set!=false){
+                if (time_been_set != false) {
                     System.out.println("(error) more than one of the same type of modifying flag has been used");
                     return;
-                }else{
-                    time_saved=true;
-                    time_been_set=true;
+                } else {
+                    time_saved = true;
+                    time_been_set = true;
                 }
                 total++;
 
@@ -100,30 +110,31 @@ public class Main {
 
             //NX -- Only set the key if it does not already exist.
             if (arr[arrpos].toUpperCase().equals("NX")) {
-                if(setif_set!=false){
+                if (setif_set != false) {
                     System.out.println("(error) more than one of the same type of modifying flag has been used");
                     return;
-                }else {
+                } else {
                     if (node.key == null) {
                         node.key = arr[1];
                         node.value = arr[2];
+                        System.out.println("VAlUE WAS SET");
                         //total++;
                     } else {
 
-                        OUTPUTMESSAGE = "> (nil)";
-                        node = copy;
+                        System.out.println("> (nil)");
+                        return;
                     }
 
                     total++;
-                    setif_set=true;
+                    setif_set = true;
                 }
             }
             // XX -- Only set the key if it already exists.
             if (arr[arrpos].toUpperCase().equals("XX")) {
-                if(setif_set!=false){
+                if (setif_set != false) {
                     System.out.println("(error) more than one of the same type of modifying flag has been used");
                     return;
-                }else {
+                } else {
                     if (node.key != null) {
                         node.key = arr[1];
                         node.value = arr[2];
@@ -131,83 +142,81 @@ public class Main {
 
                     } else {
                         System.out.println("> (nil)");
-                        node = null;
+                        return;
                     }
                     total++;
-                    setif_set=true;
+                    setif_set = true;
                 }
             }
 
-            if(node!=null) {
-            //Grabs EX value and increases counter by one to reduce redundant scans
-            if (arr[arrpos].toUpperCase().equals("PX")) {
-                if (time_been_set != false) {
-                    System.out.println("(error) more than one of the same type of modifying flag has been used");
-                    return;
-                }else{
-                long miliseconds = System.currentTimeMillis() + Long.parseLong(arr[arrpos + 1]);
-                node.expired_time = miliseconds;
-                arrpos++;
-                total = total + 2;
-                time_been_set = true;
-            }
-            }
-            //Grabs PX value and increases counter by one to reduce redundant scans
-            else if (arr[arrpos].toUpperCase().equals("EX")) {
-                if(time_been_set!=false){
-                    System.out.println("(error) more than one of the same type of modifying flag has been used");
-                    return;
-                }else {
-
-                    long seconds = System.currentTimeMillis() + (Long.parseLong(arr[arrpos + 1]) * 1000);
-                    node.expired_time = seconds;
-                    arrpos++;
-                    total = total + 2;
-                    time_been_set=true;
+            if (node != null) {
+                //Grabs EX value and increases counter by one to reduce redundant scans
+                if (arr[arrpos].toUpperCase().equals("PX")) {
+                    if (time_been_set != false) {
+                        System.out.println("(error) more than one of the same type of modifying flag has been used");
+                        return;
+                    } else {
+                        long miliseconds = System.currentTimeMillis() + Long.parseLong(arr[arrpos + 1]);
+                        node.expired_time = miliseconds;
+                        arrpos++;
+                        total = total + 2;
+                        time_been_set = true;
+                    }
                 }
+                //Grabs PX value and increases counter by one to reduce redundant scans
+                else if (arr[arrpos].toUpperCase().equals("EX")) {
+                    if (time_been_set != false) {
+                        System.out.println("(error) more than one of the same type of modifying flag has been used");
+                        return;
+                    } else {
 
-            } else if (arr[arrpos].toUpperCase().equals("PXAT")) {
-                if(time_been_set!=false){
-                    System.out.println("(error) more than one of the same type of modifying flag has been used");
-                    return;
-                }else {
+                        long seconds = System.currentTimeMillis() + (Long.parseLong(arr[arrpos + 1]) * 1000);
+                        node.expired_time = seconds;
+                        arrpos++;
+                        total = total + 2;
+                        time_been_set = true;
+                    }
+
+                } else if (arr[arrpos].toUpperCase().equals("PXAT")) {
+                    if (time_been_set != false) {
+                        System.out.println("(error) more than one of the same type of modifying flag has been used");
+                        return;
+                    } else {
 
 
-                    node.expired_time = Long.parseLong(arr[arrpos + 1]);
+                        node.expired_time = Long.parseLong(arr[arrpos + 1]);
 
-                    arrpos++;
-                    total = total + 2;
-                    time_been_set=true;
-                }
+                        arrpos++;
+                        total = total + 2;
+                        time_been_set = true;
+                    }
 
-            } else if (arr[arrpos].toUpperCase().equals("EXAT")) {
-                if(time_been_set!=false){
-                    System.out.println("(error) more than one of the same type of modifying flag has been used");
-                    return;
-                }else {
-                    node.expired_time = (Long.parseLong(arr[arrpos + 1]) * 1000);
-                    arrpos++;
-                    total = total + 2;
-                    time_been_set=true;
+                } else if (arr[arrpos].toUpperCase().equals("EXAT")) {
+                    if (time_been_set != false) {
+                        System.out.println("(error) more than one of the same type of modifying flag has been used");
+                        return;
+                    } else {
+                        node.expired_time = (Long.parseLong(arr[arrpos + 1]) * 1000);
+                        arrpos++;
+                        total = total + 2;
+                        time_been_set = true;
+                    }
                 }
             }
-        }
         }
 
         //SETS THE VALUE OF THE NODE AFTER SCANNING HAS BEEN DONE AS THE GET ARGUMENT WOULD NOT BE ABLE TO RETRIEVE
         // THE OLD VALUE IF IT WAS SET BEFORE
-        node.value=arr[2];
-
+        node.value = arr[2];
 
 
         //IF THE KEEPTTL FLAG WAS NOT SET AND NO OTHER EXPIRATION TIME WAS SET THEN THE VALUE WILL BE SET TO INFINITE
-        if(time_saved!=true&&time_been_set!=true){
-            node.expired_time=0;
+        if (time_saved != true && time_been_set != true) {
+            node.expired_time = 0;
         }
 
 
-
-        if(node!=null) {
+        if (node != null) {
 
             if (node.key == null) {
                 node.key = arr[1];
@@ -216,115 +225,69 @@ public class Main {
             if (total == arr.length - 1) {
 
 
-                if (exists == false) {
-                    stack.push(node);
+                if (HashMapKey.containsKey(arr[1])) {
+                    HashMapKey.put(node.key, node);
                     System.out.println(OUTPUTMESSAGE);
                 } else {
-                    stack.removeElementAt(pos);
-                    stack.push(node);
+                    HashMapKey.remove(node.key);
+                    HashMapKey.put(node.key, node);
                     System.out.println(OUTPUTMESSAGE);
                 }
             } else {
 
 
-                System.out.println("(error) "+CODEISSUE);
+                System.out.println("(error) " + CODEISSUE);
             }
         }
     }
 
-
-
-    public static void SET(String []arr){
-        int total=0; // Will be used to make sure all fields in command are being used by totalling the fields
-        boolean exists = false;
-        NODE exists_node = null;
-        int pos =-1;
-
-
-        //checks to make sure there aren't equal key values that are already in the system
-        for(int check = 0;check < stack.size();check++){
-
-            if(stack.elementAt(check).key.equals(arr[1])){
-                exists=true;
-                exists_node=stack.elementAt(check);
-                pos=check;
-            }
-        }
-        //IF IT EXISTS ALREADY IT WILL PASS IN THAT NODE, BUT IF NOT IT WILL CREATE A NEW NODE AND SEND THAT
-        if(exists==true){
-            operateSet(arr,exists_node,exists,pos);
-        }else {
-            NODE newNode = new NODE();
-        operateSet(arr,newNode,exists,pos);
+    public static void GET(String []arr) {
+        boolean found = false;
+        // DOESNT ALLOW FOR MORE THAN 1 KEY
+        if (arr.length > 2) {
+            System.out.println("(error) ERR wrong number of arguments for command");
+            return;
         }
 
+        NODE get_node = HashMapKey.get(arr[1]);
+        if (HashMapKey.containsKey(arr[1]) == true) {
+            //CHECKS IF THE OBJECT IS EXPIRED OR NOT OR IF THE VALUE WAS NOT SET MEANING IT WONT EXPIRE (0=NO EXPIRATION)
+            if ((get_node.key.equals(arr[1]) && (get_node.expired_time - System.currentTimeMillis()) > 0)
+                    || (get_node.key.equals(arr[1]) && get_node.expired_time == 0)) {
+                System.out.println(get_node.value);
+            }else {
+                System.out.println("> (nil)");
         }
 
-    public static void GET(String []arr){
-        boolean found =false;
-        int found_pos=-2;
 
-
-
-
-
-            for (int check = 0; check < stack.size(); check++) {
-                //CHECKS IF THE OBJECT IS EXPIRED OR NOT OR IF THE VALUE WAS NOT SET MEANING IT WONT EXPIRE (0=NO EXPIRATION)
-                if ((stack.elementAt(check).key.equals(arr[1]) && (stack.elementAt(check).expired_time - System.currentTimeMillis()) > 0)
-                        || (stack.elementAt(check).key.equals(arr[1]) && stack.elementAt(check).expired_time == 0)) {
-
-
-
-                    System.out.println(stack.elementAt(check).value);
-                    found = true;
-                    found_pos=-1;
-                }
+        }
+        else {
+            if(HashMapList.containsKey(arr[1])){
+                System.out.println("(error) WRONGTYPE Operation against a key holding the wrong kind of value");
+                return;
             }
 
-            //IF THE GET DID NOT FIND ANYTHING WITHIN THE STACK CHECK THE LISTSTACK TO SEE IF
-            // THE USER IS TRYING TO USE GET INCORRECTLY AND RETURN AN ERROR MESSAGE
-            if(found_pos!=-1){
-                for (int search = 0; search < listStack.size(); search++) {
-                    if (listStack.elementAt(search).name.equals(arr[1])) {
-                        found_pos = search;
-                        break;
-                    }
-
-
-            }
-                if(found_pos>=0){
-                    System.out.println("(error) WRONGTYPE Operation against a key holding the wrong kind of value");
-                }else{
-                    if (found == false) {
-                        System.out.println("> (nil)");
-                    }
-                }
-
+            System.out.println("> (nil)");
         }
-
-
-
     }
-
     public static void DEL(String[] arr){
         int counter = 0;
-        int found =0;
-        for(int spot =0;spot<stack.size();spot++){
-            for(int arrspot=1;arrspot<arr.length;arrspot++) {
-                if (stack.elementAt(spot).key.equals(arr[arrspot])){
-                    stack.removeElementAt(spot);
+
+            for(int cycle =1;cycle< arr.length;cycle++){
+                if(HashMapKey.containsKey(arr[cycle])){
+                    HashMapKey.remove(arr[cycle]);
+                    counter++;
+                }else if(HashMapList.containsKey(arr[cycle])){
+                    HashMapList.remove(arr[cycle]);
                     counter++;
                 }
-                    //LOOP THROUGH EACH ELEMENT IN ARR PAST SPOT 1
-                    // SEE IF IT EXISTS AND IF IT DOES DELETE AND COUNTER++
             }
 
 
+                    //LOOP THROUGH EACH ELEMENT IN ARR PAST SPOT 1
+                    // SEE IF IT EXISTS AND IF IT DOES DELETE AND COUNTER++
 
 
-
-
-        }
         System.out.println("> (integer "+counter+")");
     }
 
@@ -332,24 +295,19 @@ public class Main {
         try {
             int count_added=0;
             LIST node_address_copy=null;
-        int found_pos=-1;
-
-            for (int search = 0; search < listStack.size(); search++) {
-                if (listStack.elementAt(search).name.equals(arr[1])) {
-                    found_pos = search;
-                    break;
-                }
-            }
+            int found_pos=-1;
 
 
-            //IF A LIST WITH THE SAME NAME WAS ALREADY CREATED ONLY PUSH NEW KEYS ONTO THE EXISTING STACK
-            // DO NOT CREATE A NEW STACK WITH SAME NAME
-            if(found_pos!=-1){
+
+
+            //IF A LIST WITH THE SAME NAME WAS ALREADY CREATED ONLY PUSH NEW KEYS ONTO THE EXISTING HASHMAP
+            // DO NOT CREATE A NEW HASHMAP WITH SAME NAME
+            if(HashMapList.containsKey(arr[1])){
                 for(int arrcycle=2; arrcycle<arr.length;arrcycle ++){
-                    listStack.elementAt(found_pos).stacklist.push(arr[arrcycle]);
-                    listStack.elementAt(found_pos).number_of_items++;
+                    HashMapList.get(arr[1]).stacklist.push(arr[arrcycle]);
+                    HashMapList.get(arr[1]).number_of_items++;
                 }
-                node_address_copy=listStack.elementAt(found_pos);
+                node_address_copy=HashMapList.get(arr[1]);
                 //COPIED THE MEMORY ADRESS TO ANOTHER OBJ TO BE ABLE TO OUTPUT NUM OF ITEMS IN STACK
             }else {
                 // IF A LIST WAS NOT FOUND CREATE A NEW ONE AND PUSH ALL KEYS ONTO IT
@@ -360,7 +318,7 @@ public class Main {
                     newList.stacklist.push(arr[arrcycle]);
                     newList.number_of_items++;
                 }
-                listStack.push(newList);
+                HashMapList.put(newList.name,newList);
                 //COPIED THE MEMORY ADRESS TO ANOTHER OBJ TO BE ABLE TO OUTPUT NUM OF ITEMS IN STACK
                 node_address_copy=newList;
 
@@ -375,42 +333,36 @@ public class Main {
         }
     }
     static void LPOP(String[] arr){
-try{
+        try{
         int found_pos=-1;
         //FIND IF THE LIST EXISTS TO PREFORM THE POP
-        for(int search=0;search<listStack.size();search++) {
-            //System.out.println(listStack.elementAt(search).name+"||"+arr[1]);
-            if(listStack.elementAt(search).name.equals(arr[1])){
-                found_pos=search;
-            }
-        }
-        //POP THE AMOUNT GIVEN
-        if(found_pos!=-1) {
+
+        LIST search_node = HashMapList.get(arr[1]);
+        if(HashMapList.containsKey(arr[1])) {
             //IF STACK OF ITEMS IN THE LIST IS EMPTY DO NOT TRY AND POP
-            if (listStack.elementAt(found_pos).stacklist.empty()) {
+            if (HashMapList.get(arr[1]).stacklist.empty()) {
                 System.out.println("> (nil)");
             } else {
 
-
                 if (arr.length == 2) {
                     //IF THERE IS NO ARGUMENT FOR AMOUNT DEFAULT TO ONE POP
-                    System.out.println(listStack.elementAt(found_pos).stacklist.peek());
-                    listStack.elementAt(found_pos).stacklist.pop();
-                    listStack.elementAt(found_pos).number_of_items--;
+                    System.out.println(search_node.stacklist.peek());
+                    search_node.stacklist.pop();
+                    search_node.number_of_items--;
                 } else if (arr.length == 3) {
                     //PARSE 3RD INPUT FOR INT AND POP THAT MANY TIMES, ONLY TO MAX SIZE
                     int counter = 0;
                     //IF THE AMOUNT TO POP IS BIGGER THAN THE STACK SIZE DEFAULT TO THE STACK SIZE
-                    if(Integer.parseInt(arr[2])>listStack.elementAt(found_pos).stacklist.size()){
-                        arr[2]=listStack.elementAt(found_pos).stacklist.size()+"";
+                    if(Integer.parseInt(arr[2])>search_node.stacklist.size()){
+                        arr[2]=search_node.stacklist.size()+"";
                     }
 
                     for (int loop_amount = Integer.parseInt(arr[2]); loop_amount > 0; loop_amount--) {
 
-                        System.out.println(++counter + ") " + listStack.elementAt(found_pos).stacklist.peek());
+                        System.out.println(++counter + ") " + search_node.stacklist.peek());
 
-                        listStack.elementAt(found_pos).stacklist.pop();
-                        listStack.elementAt(found_pos).number_of_items--;
+                        search_node.stacklist.pop();
+                        search_node.number_of_items--;
                     }
                 }
 
@@ -428,29 +380,24 @@ try{
 
     }
     static void LRANGE(String arr[]){
-    try{
-        if(arr.length==4) {
-            int found_pos = -1;
-            //FIND IF THE LIST EXISTS TO PREFORM THE POP
-            for (int search = 0; search < listStack.size(); search++) {
-                if (listStack.elementAt(search).name.equals(arr[1])) {
-                    found_pos = search;
-                }
-            }
-            //IF IT WASN'T FOUND WITHIN THE STACK OF LISTS THEN SOUT NIL AND QUIT
-            if (found_pos == -1) {
-                System.out.println("> (nil)");
-                return;
-            } else {
+        try{
+            if(arr.length==4) {
+
+
+
+
+
+                LIST search_node = HashMapList.get(arr[1]);
+                if (HashMapList.containsKey(arr[1])) {
                 int start = (Integer.parseInt(arr[2]));
                 int end = (Integer.parseInt(arr[3]));
                 if (start < 0) {
                     //Incase of a negative add it to the size so that if you wanted to start 3 from the end you can say
                     // -3 which is going to be processed as n+(-3) which gives you that pos
-                    start = listStack.elementAt(found_pos).stacklist.size() + start;
+                    start = search_node.stacklist.size() + start;
                 }
                 if (end < 0) {
-                    end = listStack.elementAt(found_pos).stacklist.size() + end;
+                    end = search_node.stacklist.size() + end;
                 }
 
 
@@ -462,11 +409,11 @@ try{
                     end = -1;
                 }
                 //IF THE SIZE OF EITHER START OR END IS LARGER THAN THE SIZE OF THE STACK STOP IT AT THE END
-                if (end > listStack.elementAt(found_pos).stacklist.size()) {
-                    end = listStack.elementAt(found_pos).stacklist.size();
+                if (end > search_node.stacklist.size()) {
+                    end = search_node.stacklist.size();
                 }
-                if (start > listStack.elementAt(found_pos).stacklist.size()) {
-                    start = listStack.elementAt(found_pos).stacklist.size();
+                if (start > search_node.stacklist.size()) {
+                    start = search_node.stacklist.size();
                 }
                 //OUTPUT THE CONTROLLED RANGEl
 
@@ -477,7 +424,7 @@ try{
                     return;
                 }
                 //IF END DOESNT EQUAL THE SIZE OF THE STACKLIST
-                if(end!=listStack.elementAt(found_pos).stacklist.size()) {
+                if(end!=search_node.stacklist.size()) {
                     end++;
                 }
                 //IF END == START AND == STACKLIST SIZE
@@ -495,10 +442,13 @@ try{
 
                 for (start = start; start < end; start++) {
 
-                    System.out.println(++counter + ") " + listStack.elementAt(found_pos).stacklist.elementAt(listStack.elementAt(found_pos).stacklist.size()-start-1));
+                    System.out.println(++counter + ") " + search_node.stacklist.elementAt(search_node.stacklist.size()-start-1));
                 }
 
-            }
+            }else{
+                    System.out.println("> (nil)");
+                    return;
+                }
         }else{
             System.out.println("(error) syntax error");
         }
@@ -506,6 +456,13 @@ try{
         System.out.println("(error) syntax error"+e);
     }
     }
+
+    static void HSET(String arr[]){
+
+    }
+
+
+
     public static void CommandLine(){
         try {
 
@@ -537,12 +494,11 @@ try{
                 case "LRANGE":
                     LRANGE(arr);
                     break;
+
                 case "OUT":
                     // OUTPUTS ALL KEY AND VALS (DOESNT WORK WITH LISTS CREATED WITH LPUSH)
-                    while (stack.empty() != true) {
-                        System.out.println(stack.peek().key + " " + stack.peek().value + " " + stack.peek().expired_time);
-                        stack.pop();
-                    }
+
+                    System.out.println(HashMapKey);
                         break;
 
                 default:

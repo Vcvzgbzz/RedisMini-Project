@@ -4,23 +4,13 @@ Documentation:
 
 Data Structuring:
 
-The main data structure used is a stack throughout the entirety of this program. I used this to simplify the push and pop for LPOP and LPUSH and able to use it as a linked list for searching if need be.
+Newest version uses a hash map for GET/SET/DEL and a main Hashmap for LPUSH,LPOP,LRANGE. Original Coding used a stack for GET/SET/DEL. This was changed to reduce time complexity for GET/SET/DEL searching from O(n) to O(1).
 
-Lists are stored as a “LIST” object with a stack within itself to add as many items as wanted within the list
+There are two main Hashmaps one for lists and one for key/vals
 
-Keys/values for GET,SET and DEL are stored as “NODE” objects and just allows for the simplification of placing data
+There is a stack within each LIST type for LPUSH/LPOP/LRANGE
 
-Both LIST and NODE objects have a global stack that holds all of the ones created for that is referenced for Adding/Deleting/Modifying/Searching throughout the program
-
-
-Since Lists and Nodes are stored as separately this allows to have lists and keys/vals with the same name such as a key being set to 1 and a list name being 1. This was not possible within the example webpage, but I thought it to be useful. On the webpage if you created a list with name 1 and then created a key with name one it would nuke the list.
-
-
-
-
-
-
-
+Lists and key/vals are stored separately within this solution
 
 
 Handling Expiring Keys:
@@ -37,17 +27,6 @@ Reference:
 https://redis.io/commands/
 
 For GET,SET,DEL,LPUSH,LPOP,LRANGE
-
-
-
-
-Negatives about my solution:
-
-My time complexity is very high comparatively for each function as all use a search. EX: SET will search if the key was previously made and if it was it will pass that in so that is a large value of O(n). Then it will check the arr for all flags in any order which adds at most O(5) which makes the total time complexity O(n). This could have been avoided by adding a key on the top without checking if the same key name already exists each time unless a KEEPTTL or GET flag was placed to reduce it down to O(1) like the actual reddis, but then the stack would have to have its own trash system that runs every now and then. Reducing O(n) to O(1) would work that way since you search from top down to find the key so the newest one would always be returned, but my version leads to less memory used.
-
-Since the set and get were constructed outside the object classes searching is done more than it needs to be as well. This would be fixed by recoding the set and get functions to be within the nodes and possibly to combine them into one object class to reduce searching twice such as in GET when it looks for the list and the key/val and returns separate outputs depending if it finds a list or key/val
-
-
 
 
 
