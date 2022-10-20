@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d41ebdb9-76b8-416f-8a10-a2aab98eb64b" name="Changes" comment="&#10;&#10;LRANGE NOW WORKS AS INTENDED - REFRENCE REDDIS ON HOW TO USE&#10;&#10;-- UPDATED README">
+    <list default="true" id="d41ebdb9-76b8-416f-8a10-a2aab98eb64b" name="Changes" comment="-- COMMENT FIXES">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
@@ -46,7 +46,8 @@
       <workItem from="1665973163712" duration="4481000" />
       <workItem from="1665994975484" duration="246000" />
       <workItem from="1666038688944" duration="82000" />
-      <workItem from="1666065838951" duration="9627000" />
+      <workItem from="1666065838951" duration="15015000" />
+      <workItem from="1666294596650" duration="331000" />
     </task>
     <task id="LOCAL-00001" summary="Starting...">
       <created>1665787755713</created>
@@ -97,7 +98,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665977515337</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="&#10;&#10;-- FIXED BUG WHERE WHEN GIVING MULTIPLE THINGS INTO GET IT WOULD STILL RESPOND BY INTERPRETING THE FIRST VALUE AFTER THE COMMAND AS THE KEY: NOW WILL CHECK TO MAKE SURE THERE IS ONLY ONE KEY TO BE SEARCHED.&#10;&#10;-- CONVERTED MAIN STACKS TO HASHMAPS FOR SEARCHING REDUCING TIME COMPLEXITY TO O(1) INSTEAD OF O(N) FOR MANY FUNCTIONS&#10;&#10;--DEL NOW SUPPORTS BOTH LISTS AND KEY/VALS&#10;&#10;-- UPDATED README.md">
+      <created>1666075836922</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1666075836922</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -119,6 +127,7 @@
     <MESSAGE value="Test" />
     <MESSAGE value="Added README.md/ Implimented LRANGE function -- need to fix output of lrange as it pulls from the bottom and a couple other bugs" />
     <MESSAGE value="&#10;&#10;LRANGE NOW WORKS AS INTENDED - REFRENCE REDDIS ON HOW TO USE&#10;&#10;-- UPDATED README" />
-    <option name="LAST_COMMIT_MESSAGE" value="&#10;&#10;LRANGE NOW WORKS AS INTENDED - REFRENCE REDDIS ON HOW TO USE&#10;&#10;-- UPDATED README" />
+    <MESSAGE value="&#10;&#10;-- FIXED BUG WHERE WHEN GIVING MULTIPLE THINGS INTO GET IT WOULD STILL RESPOND BY INTERPRETING THE FIRST VALUE AFTER THE COMMAND AS THE KEY: NOW WILL CHECK TO MAKE SURE THERE IS ONLY ONE KEY TO BE SEARCHED.&#10;&#10;-- CONVERTED MAIN STACKS TO HASHMAPS FOR SEARCHING REDUCING TIME COMPLEXITY TO O(1) INSTEAD OF O(N) FOR MANY FUNCTIONS&#10;&#10;--DEL NOW SUPPORTS BOTH LISTS AND KEY/VALS&#10;&#10;-- UPDATED README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="&#10;&#10;-- FIXED BUG WHERE WHEN GIVING MULTIPLE THINGS INTO GET IT WOULD STILL RESPOND BY INTERPRETING THE FIRST VALUE AFTER THE COMMAND AS THE KEY: NOW WILL CHECK TO MAKE SURE THERE IS ONLY ONE KEY TO BE SEARCHED.&#10;&#10;-- CONVERTED MAIN STACKS TO HASHMAPS FOR SEARCHING REDUCING TIME COMPLEXITY TO O(1) INSTEAD OF O(N) FOR MANY FUNCTIONS&#10;&#10;--DEL NOW SUPPORTS BOTH LISTS AND KEY/VALS&#10;&#10;-- UPDATED README.md" />
   </component>
 </project>

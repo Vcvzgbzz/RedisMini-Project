@@ -117,7 +117,7 @@ public class Main {
                     if (node.key == null) {
                         node.key = arr[1];
                         node.value = arr[2];
-                        System.out.println("VAlUE WAS SET");
+
                         //total++;
                     } else {
 
@@ -308,7 +308,7 @@ public class Main {
                     HashMapList.get(arr[1]).number_of_items++;
                 }
                 node_address_copy=HashMapList.get(arr[1]);
-                //COPIED THE MEMORY ADRESS TO ANOTHER OBJ TO BE ABLE TO OUTPUT NUM OF ITEMS IN STACK
+                //COPIED THE MEMORY ADRESS TO ANOTHER OBJ TO BE ABLE TO OUTPUT NUM OF ITEMS IN HASHMAP
             }else {
                 // IF A LIST WAS NOT FOUND CREATE A NEW ONE AND PUSH ALL KEYS ONTO IT
                 LIST newList = new LIST();
@@ -319,7 +319,7 @@ public class Main {
                     newList.number_of_items++;
                 }
                 HashMapList.put(newList.name,newList);
-                //COPIED THE MEMORY ADRESS TO ANOTHER OBJ TO BE ABLE TO OUTPUT NUM OF ITEMS IN STACK
+
                 node_address_copy=newList;
 
             }
@@ -496,9 +496,10 @@ public class Main {
                     break;
 
                 case "OUT":
-                    // OUTPUTS ALL KEY AND VALS (DOESNT WORK WITH LISTS CREATED WITH LPUSH)
+                    // OUTPUTS HASHMAPS
 
                     System.out.println(HashMapKey);
+                    System.out.println(HashMapList);
                         break;
 
                 default:
